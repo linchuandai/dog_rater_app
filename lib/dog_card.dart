@@ -40,9 +40,9 @@ class _DogCardState extends State<DogCard> {
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.topRight,
-                colors: [Colors.black54, Colors.black, Colors.blueGrey[600]],
+                    begin: Alignment.topLeft,
+                    end: Alignment.topRight,
+                    colors: [Colors.black54, Colors.black, Colors.blueGrey[600]],
                 ),
             ),
             alignment: Alignment.center,
