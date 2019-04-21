@@ -19,16 +19,44 @@ class _DogCardState extends State<DogCard> {
   _DogCardState(this.dog);
 
   Widget get dogImage {
-    return Container(
+    var dogAvatar = Hero(
+      tag: dog,
+      child: Container(
+        width: 100.0,
+        height: 100.0,
+        decoration: new BoxDecoration(
+          shape: BoxShape.circle,
+          image: new DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(renderUrl ?? ''),
+          ),
+        ),
+      ),
+    );
+
+    var placeholder = Container(
       width: 100.0,
       height: 100.0,
       decoration: new BoxDecoration(
         shape: BoxShape.circle,
-        image: new DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(renderUrl ?? ''),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.topRight,
+          colors: [Colors.black54, Colors.black, Colors.blueGrey[600]],
         ),
       ),
+      alignment: Alignment.center,
+      child: Text(
+        'DOGGO',
+        textAlign: TextAlign.center,
+      ),
+    );
+
+    return AnimatedCrossFade(
+      firstChild: placeholder,
+      secondChild: dogAvatar,
+      crossFadeState: renderUrl == null ? CrossFadeState.showFirst :CrossFadeState.showSecond,
+      duration: Duration(milliseconds: 1000),
     );
   }
 

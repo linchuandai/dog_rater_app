@@ -56,37 +56,41 @@ class _DogDetailPageState extends State<DogDetailPage> {
 
   Widget get submitRatingButton {
     return RaisedButton(
-      onPressed: () => print('pressed'),
+      onPressed: updateRating,
       child: Text('Submit'),
       color: Colors.indigoAccent,
     );
   }
 
   Widget get dogImage {
-    return Container(
-      height: dogAvatarSize,
-      width:dogAvatarSize,
-      decoration: BoxDecoration(
-        boxShadow: [
-          const BoxShadow(
-            offset: const Offset(1.0, 2.0),
-            blurRadius: 2.0,
-            spreadRadius: -1.0,
-            color: const Color(0x33000000)),
-          const BoxShadow(
-              offset: const Offset(2.0, 1.0),
-              blurRadius: 3.0,
-              spreadRadius: 0.0,
-              color: const Color(0x24000000)),
-          const BoxShadow(
-              offset: const Offset(3.0, 1.0),
-              blurRadius: 4.0,
-              spreadRadius: 2.0,
-              color: const Color(0x1F000000)),
-        ],
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(widget.dog.imageUrl ?? ''),
+    return Hero(
+      tag: widget.dog,
+      child: Container(
+        height: dogAvatarSize,
+        width:dogAvatarSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            const BoxShadow(
+              offset: const Offset(1.0, 2.0),
+              blurRadius: 2.0,
+              spreadRadius: -1.0,
+              color: const Color(0x33000000)),
+            const BoxShadow(
+                offset: const Offset(2.0, 1.0),
+                blurRadius: 3.0,
+                spreadRadius: 0.0,
+                color: const Color(0x24000000)),
+            const BoxShadow(
+                offset: const Offset(3.0, 1.0),
+                blurRadius: 4.0,
+                spreadRadius: 2.0,
+                color: const Color(0x1F000000)),
+          ],
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(widget.dog.imageUrl ?? ''),
+          ),
         ),
       ),
     );
@@ -158,6 +162,32 @@ class _DogDetailPageState extends State<DogDetailPage> {
       body: ListView(
         children: <Widget>[dogProfile, addYourRating],
       ),
+    );
+  }
+
+  void updateRating() {
+    if (_sliderValue < 10) {
+      _ratingErrorDialog();
+    } else {
+      setState(() => widget.dog.rating = _sliderValue.toInt());
+    }
+  }
+
+  Future<Null> _ratingErrorDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error!'),
+          content: Text("${widget.dog.name} is a good boy!"),
+          actions: [
+            FlatButton(
+              child: Text('Try Again'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ]
+        );
+      }
     );
   }
 }
